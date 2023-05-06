@@ -1,0 +1,45 @@
+---
+title: DB Schema Diagram
+---
+
+classDiagram
+    
+    User "1" --> "*" Daily_Expenses : Association
+    User "1" --> "*" Monthly_Expenses : Association
+    Monthly_Expenses "1" --> "*" Daily_Expenses : Association
+
+    class User {
+        ID = String
+        Username = String
+        Email = String
+        ProfilePictureUrl = String
+        Password = String
+        Created_At = Date
+        Updated_At = Date
+        Roles: String[]
+    }
+
+    class Monthly_Expenses {
+        ID = String
+        User = UserRef
+        Month = String
+        Year = Number
+        Total_Amount = Number
+        Created_At = Date
+        Updated_At = Date
+    }
+
+    class Daily_Expenses {
+        Category = String
+        Description = String
+        ID = String
+        User = UserRef
+        Day = String
+        Month = MonthRef
+        Amount = Number
+        Created_At = Date
+        Updated_At = Date
+        ExpenseImageUrl = String
+    }
+
+
