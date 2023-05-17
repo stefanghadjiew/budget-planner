@@ -3,7 +3,9 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 /* import dotenv from 'dotenv'; */
+import './db';
 import compression from 'compression';
+import createUserMiddleware from './middleware/user/create';
 
 const app = express();
 
@@ -21,13 +23,7 @@ const serverPort = process.env.PORT || 5001;
 
 /* app.use('/api/v1', routes); */
 
-app.get('/test', (req, res) => {
-  const reqHeaders = req.headers;
-  res.status(200).json({
-    msg: 'Hello from Budget Planner Server',
-    headers: reqHeaders,
-  });
-});
+app.post('/users/create', createUserMiddleware);
 
 app.listen(serverPort, () => {
   console.log(`Server listening on PORT: ${serverPort}`);
