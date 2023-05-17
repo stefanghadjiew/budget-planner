@@ -8,7 +8,7 @@ import {
 } from '../../config';
 
 const dbOptions = {
-  autoIndex: true,
+  /*  autoIndex: true, */
   useNewUrlParser: true,
   useUnifiedTopology: true,
   connectTimeoutMS: 60000,
