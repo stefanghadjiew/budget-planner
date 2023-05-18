@@ -6,6 +6,7 @@ import cors from 'cors';
 import './db';
 import compression from 'compression';
 import createUserMiddleware from './middleware/user/create';
+import deleteUserMiddleware from './middleware/user/delete';
 
 const app = express();
 
@@ -24,6 +25,7 @@ const serverPort = process.env.PORT || 5001;
 /* app.use('/api/v1', routes); */
 
 app.post('/users/create', createUserMiddleware);
+app.post('/users/:userId/delete', deleteUserMiddleware);
 
 app.listen(serverPort, () => {
   console.log(`Server listening on PORT: ${serverPort}`);

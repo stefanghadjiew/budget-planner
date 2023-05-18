@@ -30,7 +30,7 @@ const createUserMiddleware = async (
       refreshTokenKey,
     );
     return new SuccessResponse(
-      createResponseMessage(responseMessageTypes.USER, email),
+      createResponseMessage(responseMessageTypes.user.CREATION_SUCCESS, email),
     ).send(res, createdUser);
   } catch (e) {
     return next(e);
