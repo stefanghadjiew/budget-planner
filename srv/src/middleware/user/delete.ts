@@ -1,24 +1,34 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserModel } from 'db/models';
-import { UserInterface } from 'db/interfaces';
+import { UserModel } from '../../db/models';
+import SuccessResponse from '../../core/APIResponses/SuccessResponse';
+import FailureResponse from '../../core/APIResponses/FailureResponse';
+import {
+  createResponseMessage,
+  responseMessageTypes,
+} from '../../core/APIResponses/responseMessages';
 
 const deleteUserMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): Promise<UserInterface | null> => {
-  const { email } = req.body;
+) => {
+  const { userId } = req.params;
   try {
-    const userToDelete = await UserModel.findOne({ email });
+    const userToDelete = await UserModel.findById(userId);
     if (!userToDelete) {
-      res
-        .status(404)
-        .json({ message: `User with e-mail ${email} does not exist!` });
-    } else {
-      await UserModel.findOneAndDelete({ email });
+      return new FailureResponse(
+        createResponseMessage(
+          responseMessageTypes.user.DELETION_CONFLICT,
+          userId,
+        ),
+      ).send(res);
     }
+    const deletedUser = await UserModel.findByIdAndDelete(userId);
+    return new SuccessResponse(
+      createResponseMessage(responseMessageTypes.user.DELETION_SUCCESS, userId),
+    ).send(res, deletedUser);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 

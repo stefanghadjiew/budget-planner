@@ -1,14 +1,14 @@
 export const responseMessageTypes = {
-  USER: 'USER',
-};
-
-const userMessageTypes = {
-  CREATION_SUCCESS: 'CREATION SUCCESS',
-  CREATION_ERROR: 'CREATION_ERROR',
-  DELETION_SUCCESS: 'DELETION_SUCCESS',
-  DELETION_ERROR: 'DELETION_ERROR',
-  UPDATE_SUCCESS: 'UPDATE SUCCESS',
-  UPDATE_ERROR: 'UPDATE_ERROR',
+  user: {
+    CREATION_SUCCESS: 'CREATION SUCCESS',
+    SUCCESS_CONFLICT: 'SUCCESS CONFLICT',
+    CREATION_ERROR: 'CREATION_ERROR',
+    DELETION_SUCCESS: 'DELETION SUCCESS',
+    DELETION_CONFLICT: 'DELETION CONFLICT',
+    DELETION_ERROR: 'DELETION_ERROR',
+    UPDATE_SUCCESS: 'UPDATE SUCCESS',
+    UPDATE_ERROR: 'UPDATE_ERROR',
+  },
 };
 
 const generateMessage = (
@@ -16,8 +16,12 @@ const generateMessage = (
   interpolationVariable: string,
 ): string => {
   switch (messageType) {
-    case userMessageTypes.CREATION_SUCCESS:
+    case responseMessageTypes.user.CREATION_SUCCESS:
       return `User with e-mail ${interpolationVariable} created successfully`;
+    case responseMessageTypes.user.DELETION_SUCCESS:
+      return `User with id ${interpolationVariable} deleted`;
+    case responseMessageTypes.user.DELETION_CONFLICT:
+      return `User with id ${interpolationVariable} doesen't exist`;
     default:
       return 'Default message generated';
   }
@@ -29,9 +33,19 @@ export const createResponseMessage = (
 ) => {
   if (interpolationVariable) {
     switch (type) {
-      case responseMessageTypes.USER:
+      case responseMessageTypes.user.CREATION_SUCCESS:
         return generateMessage(
-          userMessageTypes.CREATION_SUCCESS,
+          responseMessageTypes.user.CREATION_SUCCESS,
+          interpolationVariable,
+        );
+      case responseMessageTypes.user.DELETION_SUCCESS:
+        return generateMessage(
+          responseMessageTypes.user.DELETION_SUCCESS,
+          interpolationVariable,
+        );
+      case responseMessageTypes.user.DELETION_CONFLICT:
+        return generateMessage(
+          responseMessageTypes.user.DELETION_CONFLICT,
           interpolationVariable,
         );
       default:
