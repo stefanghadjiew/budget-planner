@@ -7,6 +7,7 @@ import './db';
 import compression from 'compression';
 import createUserMiddleware from './middleware/user/create';
 import deleteUserMiddleware from './middleware/user/delete';
+import updateUserMiddleware from './middleware/user/update';
 
 const app = express();
 
@@ -26,6 +27,7 @@ const serverPort = process.env.PORT || 5001;
 
 app.post('/users/create', createUserMiddleware);
 app.post('/users/:userId/delete', deleteUserMiddleware);
+app.put('/users/:userId/update', updateUserMiddleware);
 
 app.listen(serverPort, () => {
   console.log(`Server listening on PORT: ${serverPort}`);

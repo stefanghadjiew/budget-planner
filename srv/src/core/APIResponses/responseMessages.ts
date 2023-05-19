@@ -8,6 +8,7 @@ export const responseMessageTypes = {
     DELETION_ERROR: 'DELETION_ERROR',
     UPDATE_SUCCESS: 'UPDATE SUCCESS',
     UPDATE_ERROR: 'UPDATE_ERROR',
+    UPDATE_CONFLICT: 'UPDATE CONFLICT',
   },
 };
 
@@ -21,7 +22,11 @@ const generateMessage = (
     case responseMessageTypes.user.DELETION_SUCCESS:
       return `User with id ${interpolationVariable} deleted`;
     case responseMessageTypes.user.DELETION_CONFLICT:
-      return `User with id ${interpolationVariable} doesen't exist`;
+      return `Failed to delete user with id: ${interpolationVariable}. User doesen't exist`;
+    case responseMessageTypes.user.UPDATE_SUCCESS:
+      return `User with id: ${interpolationVariable} updated successfully`;
+    case responseMessageTypes.user.UPDATE_CONFLICT:
+      return `Failed to update user with id: ${interpolationVariable}. User doesen't exist`;
     default:
       return 'Default message generated';
   }
@@ -46,6 +51,11 @@ export const createResponseMessage = (
       case responseMessageTypes.user.DELETION_CONFLICT:
         return generateMessage(
           responseMessageTypes.user.DELETION_CONFLICT,
+          interpolationVariable,
+        );
+      case responseMessageTypes.user.UPDATE_CONFLICT:
+        return generateMessage(
+          responseMessageTypes.user.UPDATE_CONFLICT,
           interpolationVariable,
         );
       default:

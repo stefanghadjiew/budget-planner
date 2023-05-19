@@ -11,7 +11,7 @@ const deleteUserMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<Response | void> => {
   const { userId } = req.params;
   try {
     const userToDelete = await UserModel.findById(userId);
