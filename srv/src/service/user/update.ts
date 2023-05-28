@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserModel } from '../../db/models';
-import SuccessResponse from '../../core/APIResponses/SuccessResponse';
-import FailureResponse from '../../core/APIResponses/FailureResponse';
+import SuccessResponse from '../../core/APIResponses/success/SuccessResponse';
+import FailureResponse from '../../core/APIResponses/failure/NotFoundResponse';
 import {
   createResponseMessage,
   responseMessageTypes,
 } from '../../core/APIResponses/responseMessages';
 
-const updateUserMiddleware = async (
+const updateUserService = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -19,7 +19,7 @@ const updateUserMiddleware = async (
     if (!userToUpdate) {
       return new FailureResponse(
         createResponseMessage(
-          responseMessageTypes.user.UPDATE_CONFLICT,
+          responseMessageTypes.conflict.user.UPDATE_CONFLICT,
           userId,
         ),
       ).send(res);
@@ -28,11 +28,14 @@ const updateUserMiddleware = async (
       ...updateInfo,
     });
     return new SuccessResponse(
-      createResponseMessage(responseMessageTypes.user.UPDATE_SUCCESS, userId),
+      createResponseMessage(
+        responseMessageTypes.success.user.UPDATE_SUCCESS,
+        userId,
+      ),
     ).send(res, updatedUser);
   } catch (e) {
     return next(e);
   }
 };
 
-export default updateUserMiddleware;
+export default updateUserService;

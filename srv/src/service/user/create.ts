@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import * as crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import SuccessResponse from '../../core/APIResponses/SuccessResponse';
+import { generateKeys } from '../utils';
+import SuccessResponse from '../../core/APIResponses/success/SuccessResponse';
 import {
   createResponseMessage,
   responseMessageTypes,
 } from '../../core/APIResponses/responseMessages';
 import { UserInterface } from '../../db/interfaces';
-import { createUser } from '../../db/repository';
+import { createUserDBLayer } from '../../db/repository';
 
-const createUserMiddleware = async (
+const createUserService = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -19,22 +19,24 @@ const createUserMiddleware = async (
     email,
     password,
   }: { name: string; email: string; password: string } = req.body;
-  const accessTokenKey = crypto.randomBytes(64).toString('hex');
-  const refreshTokenKey = crypto.randomBytes(64).toString('hex');
+  const { accessTokenKey, refreshTokenKey } = generateKeys();
   const passwordHash = await bcrypt.hash(password, 10);
 
   try {
-    const createdUser = await createUser(
+    const createdUser = await createUserDBLayer(
       { name, email, password: passwordHash } as UserInterface,
       accessTokenKey,
       refreshTokenKey,
     );
     return new SuccessResponse(
-      createResponseMessage(responseMessageTypes.user.CREATION_SUCCESS, email),
+      createResponseMessage(
+        responseMessageTypes.success.user.CREATION_SUCCESS,
+        email,
+      ),
     ).send(res, createdUser);
   } catch (e) {
     return next(e);
   }
 };
 
-export default createUserMiddleware;
+export default createUserService;

@@ -1,5 +1,5 @@
-import ApiResponse from './APIResponse';
-import { StatusCode, ResponseStatus } from './enums';
+import ApiResponse from '../APIResponse';
+import { StatusCode, ResponseStatus } from '../enums';
 
 class SuccessResponse extends ApiResponse {
   constructor(message: string) {

@@ -5,9 +5,9 @@ import cors from 'cors';
 /* import dotenv from 'dotenv'; */
 import './db';
 import compression from 'compression';
-import createUserMiddleware from './middleware/user/create';
-import deleteUserMiddleware from './middleware/user/delete';
-import updateUserMiddleware from './middleware/user/update';
+import createUserService from './service/user/create';
+import deleteUserService from './service/user/delete';
+import updateUserService from './service/user/update';
 
 const app = express();
 
@@ -25,9 +25,10 @@ const serverPort = process.env.PORT || 5001;
 
 /* app.use('/api/v1', routes); */
 
-app.post('/users/create', createUserMiddleware);
-app.post('/users/:userId/delete', deleteUserMiddleware);
-app.put('/users/:userId/update', updateUserMiddleware);
+app.post('/users/signup', createUserService);
+/* app.post('/users/login', loginUserMiddleware); */
+app.post('/users/:userId/delete', deleteUserService);
+app.put('/users/:userId/update', updateUserService);
 
 app.listen(serverPort, () => {
   console.log(`Server listening on PORT: ${serverPort}`);

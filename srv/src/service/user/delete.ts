@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserModel } from '../../db/models';
-import SuccessResponse from '../../core/APIResponses/SuccessResponse';
-import FailureResponse from '../../core/APIResponses/FailureResponse';
+import SuccessResponse from '../../core/APIResponses/success/SuccessResponse';
+
 import {
   createResponseMessage,
   responseMessageTypes,
 } from '../../core/APIResponses/responseMessages';
+import NotFoundError from '../../core/APIErrors/NotFoundError';
 
-const deleteUserMiddleware = async (
+const deleteUserService = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -16,20 +17,23 @@ const deleteUserMiddleware = async (
   try {
     const userToDelete = await UserModel.findById(userId);
     if (!userToDelete) {
-      return new FailureResponse(
+      throw new NotFoundError(
         createResponseMessage(
-          responseMessageTypes.user.DELETION_CONFLICT,
+          responseMessageTypes.failure.user.DELETION_ERROR,
           userId,
         ),
-      ).send(res);
+      );
     }
     const deletedUser = await UserModel.findByIdAndDelete(userId);
     return new SuccessResponse(
-      createResponseMessage(responseMessageTypes.user.DELETION_SUCCESS, userId),
+      createResponseMessage(
+        responseMessageTypes.success.user.DELETION_SUCCESS,
+        userId,
+      ),
     ).send(res, deletedUser);
   } catch (err) {
     return next(err);
   }
 };
 
-export default deleteUserMiddleware;
+export default deleteUserService;
