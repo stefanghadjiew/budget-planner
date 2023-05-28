@@ -3,7 +3,7 @@ import { KeystoreInterface, UserInterface } from '../interfaces';
 import { UserModel } from '../models';
 import { createKeystore } from './KeystoreRepo';
 
-export const createUser = async (
+export const createUserDBLayer = async (
   user: UserInterface,
   accessTokenKey: string,
   refreshTokenKey: string,
