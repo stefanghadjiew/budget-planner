@@ -1,32 +1,69 @@
 export const responseMessageTypes = {
-  user: {
-    CREATION_SUCCESS: 'CREATION SUCCESS',
-    SUCCESS_CONFLICT: 'SUCCESS CONFLICT',
-    CREATION_ERROR: 'CREATION_ERROR',
-    DELETION_SUCCESS: 'DELETION SUCCESS',
-    DELETION_CONFLICT: 'DELETION CONFLICT',
-    DELETION_ERROR: 'DELETION_ERROR',
-    UPDATE_SUCCESS: 'UPDATE SUCCESS',
-    UPDATE_ERROR: 'UPDATE_ERROR',
-    UPDATE_CONFLICT: 'UPDATE CONFLICT',
+  success: {
+    user: {
+      CREATION_SUCCESS: 'CREATION SUCCESS',
+      DELETION_SUCCESS: 'DELETION SUCCESS',
+      UPDATE_SUCCESS: 'UPDATE SUCCESS',
+    },
+  },
+  failure: {
+    user: {
+      CREATION_ERROR: 'CREATION_ERROR',
+      DELETION_ERROR: 'DELETION_ERROR',
+      UPDATE_ERROR: 'UPDATE_ERROR',
+    },
+  },
+  conflict: {
+    user: {
+      CREATION_CONFLICT: 'CREATION CONFLICT',
+      DELETION_CONFLICT: 'DELETION CONFLICT',
+      UPDATE_CONFLICT: 'UPDATE CONFLICT',
+    },
   },
 };
 
-const generateMessage = (
+const generateErrorMessage = (
   messageType: string,
   interpolationVariable: string,
 ): string => {
   switch (messageType) {
-    case responseMessageTypes.user.CREATION_SUCCESS:
+    case responseMessageTypes.failure.user.CREATION_ERROR:
+      return `Failed to create user: ${interpolationVariable}.`;
+    case responseMessageTypes.failure.user.DELETION_ERROR:
+      return `Failed to delete user: ${interpolationVariable}. User doesen't exist!`;
+    case responseMessageTypes.failure.user.UPDATE_ERROR:
+      return `Failed to update user: ${interpolationVariable}. User doesen't exist!`;
+    default:
+      return 'Default error message';
+  }
+};
+
+const generateSuccessMessage = (
+  messageType: string,
+  interpolationVariable: string,
+): string => {
+  switch (messageType) {
+    case responseMessageTypes.success.user.CREATION_SUCCESS:
       return `User with e-mail ${interpolationVariable} created successfully`;
-    case responseMessageTypes.user.DELETION_SUCCESS:
+    case responseMessageTypes.success.user.DELETION_SUCCESS:
       return `User with id ${interpolationVariable} deleted`;
-    case responseMessageTypes.user.DELETION_CONFLICT:
-      return `Failed to delete user with id: ${interpolationVariable}. User doesen't exist`;
-    case responseMessageTypes.user.UPDATE_SUCCESS:
+
+    case responseMessageTypes.success.user.UPDATE_SUCCESS:
       return `User with id: ${interpolationVariable} updated successfully`;
-    case responseMessageTypes.user.UPDATE_CONFLICT:
-      return `Failed to update user with id: ${interpolationVariable}. User doesen't exist`;
+    default:
+      return 'Default message generated';
+  }
+};
+
+const generateConflictMessage = (
+  messageType: string,
+  interpolationVariable: string,
+): string => {
+  switch (messageType) {
+    case responseMessageTypes.conflict.user.DELETION_CONFLICT:
+      return `Failed to delete user with id: ${interpolationVariable}.`;
+    case responseMessageTypes.conflict.user.UPDATE_CONFLICT:
+      return `Failed to update user with id: ${interpolationVariable}.`;
     default:
       return 'Default message generated';
   }
@@ -38,24 +75,29 @@ export const createResponseMessage = (
 ) => {
   if (interpolationVariable) {
     switch (type) {
-      case responseMessageTypes.user.CREATION_SUCCESS:
-        return generateMessage(
-          responseMessageTypes.user.CREATION_SUCCESS,
+      case responseMessageTypes.success.user.CREATION_SUCCESS:
+        return generateSuccessMessage(
+          responseMessageTypes.success.user.CREATION_SUCCESS,
           interpolationVariable,
         );
-      case responseMessageTypes.user.DELETION_SUCCESS:
-        return generateMessage(
-          responseMessageTypes.user.DELETION_SUCCESS,
+      case responseMessageTypes.success.user.DELETION_SUCCESS:
+        return generateSuccessMessage(
+          responseMessageTypes.success.user.DELETION_SUCCESS,
           interpolationVariable,
         );
-      case responseMessageTypes.user.DELETION_CONFLICT:
-        return generateMessage(
-          responseMessageTypes.user.DELETION_CONFLICT,
+      case responseMessageTypes.failure.user.DELETION_ERROR:
+        return generateErrorMessage(
+          responseMessageTypes.failure.user.DELETION_ERROR,
           interpolationVariable,
         );
-      case responseMessageTypes.user.UPDATE_CONFLICT:
-        return generateMessage(
-          responseMessageTypes.user.UPDATE_CONFLICT,
+      case responseMessageTypes.conflict.user.DELETION_CONFLICT:
+        return generateConflictMessage(
+          responseMessageTypes.conflict.user.DELETION_CONFLICT,
+          interpolationVariable,
+        );
+      case responseMessageTypes.conflict.user.UPDATE_CONFLICT:
+        return generateConflictMessage(
+          responseMessageTypes.conflict.user.UPDATE_CONFLICT,
           interpolationVariable,
         );
       default:
