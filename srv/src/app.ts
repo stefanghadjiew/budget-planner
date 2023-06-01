@@ -5,6 +5,7 @@ import cors from 'cors';
 /* import dotenv from 'dotenv'; */
 import './db';
 import compression from 'compression';
+import Logger from './core/Logger';
 import createUserService from './service/user/create';
 import deleteUserService from './service/user/delete';
 import updateUserService from './service/user/update';
@@ -31,5 +32,5 @@ app.post('/users/:userId/delete', deleteUserService);
 app.put('/users/:userId/update', updateUserService);
 
 app.listen(serverPort, () => {
-  console.log(`Server listening on PORT: ${serverPort}`);
+  Logger.info(`Server listening on PORT: ${serverPort}`);
 });

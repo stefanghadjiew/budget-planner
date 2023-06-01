@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Logger from '../core/Logger';
 import 'dotenv/config';
 import {
   MONGO_USER,
@@ -22,9 +23,9 @@ const connectToDB = async () => {
       dbOptions,
     );
 
-    console.log('Succesfully connected to Mongo Atlas');
+    Logger.info('Succesfully connected to Mongo Atlas');
   } catch (e) {
-    console.log(`Could not connect to Mongo Atlas! Reason:${e}`);
+    Logger.error(`Could not connect to Mongo Atlas! Reason:${e}`);
   }
 };
 
