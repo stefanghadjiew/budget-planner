@@ -8,7 +8,8 @@ import {
 } from '../../core/APIResponses/responseMessages';
 import NotFoundError from '../../core/APIErrors/NotFoundError';
 
-const deleteUserService = async (
+// eslint-disable-next-line import/prefer-default-export
+export const deleteUserService = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -35,5 +36,3 @@ const deleteUserService = async (
     return next(err);
   }
 };
-
-export default deleteUserService;
