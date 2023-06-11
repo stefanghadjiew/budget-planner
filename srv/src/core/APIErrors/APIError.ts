@@ -6,6 +6,7 @@ import InternalErrorResponse from '../APIResponses/failure/InternalErrorResponse
 import ForbiddenResponse from '../APIResponses/failure/ForbiddenResponse';
 import NotFoundResponse from '../APIResponses/failure/NotFoundResponse';
 import BadRequestResponse from '../APIResponses/failure/BadRequestResponse';
+import ConflictResponse from '../APIResponses/failure/ConflictResponse';
 
 export enum ErrorTypes {
   BAD_TOKEN = 'BadTokenError',
@@ -16,6 +17,7 @@ export enum ErrorTypes {
   NOT_FOUND = 'NotFoundError',
   BAD_REQUEST = 'BadRequestError',
   FORBIDDEN = 'ForbiddenError',
+  CONFLICT = 'ConflictError',
 }
 
 export abstract class ApiError extends Error {
@@ -42,6 +44,8 @@ export abstract class ApiError extends Error {
         return new BadRequestResponse(err.message).send(res);
       case ErrorTypes.FORBIDDEN:
         return new ForbiddenResponse(err.message).send(res);
+      case ErrorTypes.CONFLICT:
+        return new ConflictResponse(err.message).send(res);
       default:
         return new GenericFailureResponse(err.message).send(res);
     }

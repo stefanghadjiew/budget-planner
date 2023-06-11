@@ -60,6 +60,8 @@ const generateConflictMessage = (
   interpolationVariable: string,
 ): string => {
   switch (messageType) {
+    case responseMessageTypes.conflict.user.CREATION_CONFLICT:
+      return `Failed to create user with email: ${interpolationVariable}. User already exists !`;
     case responseMessageTypes.conflict.user.DELETION_CONFLICT:
       return `Failed to delete user with id: ${interpolationVariable}.`;
     case responseMessageTypes.conflict.user.UPDATE_CONFLICT:
@@ -88,6 +90,11 @@ export const createResponseMessage = (
       case responseMessageTypes.failure.user.DELETION_ERROR:
         return generateErrorMessage(
           responseMessageTypes.failure.user.DELETION_ERROR,
+          interpolationVariable,
+        );
+      case responseMessageTypes.conflict.user.CREATION_CONFLICT:
+        return generateConflictMessage(
+          responseMessageTypes.conflict.user.CREATION_CONFLICT,
           interpolationVariable,
         );
       case responseMessageTypes.conflict.user.DELETION_CONFLICT:
