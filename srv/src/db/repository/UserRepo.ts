@@ -3,6 +3,7 @@ import { KeystoreInterface, UserInterface } from '../interfaces';
 import { UserModel } from '../models';
 import { createKeystore } from './KeystoreRepo';
 
+// eslint-disable-next-line import/prefer-default-export
 export const createUserDBLayer = async (
   user: UserInterface,
   accessTokenKey: string,
@@ -22,14 +23,3 @@ export const createUserDBLayer = async (
     keystore,
   };
 };
-
-export const userExists = async (): Promise<void> => undefined;
-
-/* export const findUserById = async (params:type) => {
-};
-
-export const findUserByEmail = async (params:type) => {
-};
-
-export const updateUserCredentials = async (params:type) => {
-}; */

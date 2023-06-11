@@ -1,14 +1,15 @@
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 /* import dotenv from 'dotenv'; */
 import './db';
 import compression from 'compression';
 import Logger from './core/Logger';
-import createUserService from './service/user/create';
-import deleteUserService from './service/user/delete';
+import { createUserService, deleteUserService } from './service/user';
 import updateUserService from './service/user/update';
+import validator from './helpers/validator';
+import accessRoutesSchema from './routes/access/schema';
 
 const app = express();
 
@@ -24,8 +25,11 @@ app.use(
 
 const serverPort = process.env.PORT || 5001;
 
-/* app.use('/api/v1', routes); */
-
+/* app.use('/v1/api', routes); */
+app.get('/healthcheck', (_: Request, res: Response) => {
+  res.status(200).json({ message: 'Server up and running!' });
+});
+app.post('/users', validator(accessRoutesSchema.signup));
 app.post('/users/signup', createUserService);
 /* app.post('/users/login', loginUserMiddleware); */
 app.post('/users/:userId/delete', deleteUserService);
