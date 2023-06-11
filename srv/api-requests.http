@@ -1,0 +1,33 @@
+GET http://localhost:5001/healthcheck
+
+###
+POST http://localhost:5001/users
+Content-Type: application/json
+
+{
+    "something": "Something",
+    "something_else": "something_else"
+}
+
+###
+POST http://localhost:5001/users/create
+Content-Type: application/json
+
+{
+    "name" : "Stefan",
+    "email": "cheffo0odev@abv.bg",
+    "password": "test-password"
+}
+
+###
+
+POST http://localhost:5001/users/delete
+Content-Type: application/json
+
+###
+POST http://localhost:5001/auth/refresh-token
+Content-Type: application/json
+
+{
+    
+}
