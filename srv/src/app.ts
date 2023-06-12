@@ -25,6 +25,7 @@ const serverPort = process.env.PORT || 5001;
 
 /* app.use('/v1/api', routes); */
 /* app.use('/v1/api', routes); */
+/* app.use('/v1/api', routes); */
 app.get('/healthcheck', (_: Request, res: Response) => {
   res.status(200).json({ message: 'Server up and running!' });
 });
