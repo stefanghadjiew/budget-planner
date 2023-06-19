@@ -1,6 +1,7 @@
+### HEALTHCHECK REQUEST
 GET http://localhost:5001/healthcheck
 
-###
+### SEND SIGNUP THAT SHOULD FAIL SCHEMA VALIDATION 
 POST http://localhost:5001/users
 Content-Type: application/json
 
@@ -9,22 +10,33 @@ Content-Type: application/json
     "something_else": "something_else"
 }
 
-###
-POST http://localhost:5001/users/create
+### CREATE NEW USER
+POST http://localhost:5001/localhost:5001/v1/api/access/signup
+Content-Type: application/json
+
+{
+    "name": "Test_User",
+    "email": "test.user@gmail.com",
+    "password": "123@Test123",
+    "repeatedPassword": "123@Test123"
+}
+
+### SEND SIGNUP REQUEST THAT SHOULD RETURN CONFLICT (EXISTING USER)
+POST http://localhost:5001/v1/api/access/signup
 Content-Type: application/json
 
 {
     "name" : "Stefan",
     "email": "cheffo0odev@abv.bg",
-    "password": "test-password"
+    "password": "$123@Test123",
+    "repeatedPassword": "$123@Test123"
 }
 
-###
-
+### DELETE A USER (SUCCESS
 POST http://localhost:5001/users/delete
 Content-Type: application/json
 
-###
+### REFRESH JWT
 POST http://localhost:5001/auth/refresh-token
 Content-Type: application/json
 
