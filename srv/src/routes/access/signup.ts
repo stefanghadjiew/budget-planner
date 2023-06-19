@@ -12,7 +12,7 @@ import {
 const router = express.Router();
 
 router.post(
-  '/users/signup',
+  '/',
   validator(accessRoutesSchema.signup),
   async (req: Request, res: Response) => {
     const { name, email, password } = req.body;

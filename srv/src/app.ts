@@ -6,10 +6,8 @@ import cors from 'cors';
 import './db';
 import compression from 'compression';
 import Logger from './core/Logger';
-import { createUserService, deleteUserService } from './service/user';
 import updateUserService from './service/user/update';
-import validator from './helpers/validator';
-import accessRoutesSchema from './routes/access/schema';
+import accessRouter from './routes/access';
 
 const app = express();
 
@@ -26,13 +24,15 @@ app.use(
 const serverPort = process.env.PORT || 5001;
 
 /* app.use('/v1/api', routes); */
+/* app.use('/v1/api', routes); */
+/* app.use('/v1/api', routes); */
 app.get('/healthcheck', (_: Request, res: Response) => {
   res.status(200).json({ message: 'Server up and running!' });
 });
-app.post('/users', validator(accessRoutesSchema.signup));
-app.post('/users/signup', createUserService);
 /* app.post('/users/login', loginUserMiddleware); */
-app.post('/users/:userId/delete', deleteUserService);
+app.use('/v1/api/access', accessRouter);
+
+/* app.post('/users/:userId/delete', deleteUserService); */
 app.put('/users/:userId/update', updateUserService);
 
 app.listen(serverPort, () => {

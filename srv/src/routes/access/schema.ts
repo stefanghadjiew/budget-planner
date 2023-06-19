@@ -11,7 +11,7 @@ const accessRoutesSchema = {
       .required(),
     password: joi
       .string()
-      .pattern(/'^[a-zA-Z0-9]{3,30}$'/)
+      /* .pattern(/'^[a-zA-Z0-9]{3,30}$'/) */
       .min(8)
       .required(),
     repeatedPassword: joi.ref('password'),
